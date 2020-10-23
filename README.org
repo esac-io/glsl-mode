@@ -1,0 +1,101 @@
+#+AUTHOR: esac
+#+EMAIL: esac-io@tutanota.com
+#+DESCRIPTION: Glsl Major mode
+#+KEYWORDS: emacs, elisp, mode, major, glsl-mode, glsl
+#+LANGUAGE: en
+
+  GLSL (OpenGL shading language) emacs major mode
+
+* Overview
+
+  This major mode was original authored by Xavier.Decoret@imag.fr and
+  modified/extended by Jim Hourihan. The mode currently handles GLSL 4.6.
+
+  This package provides the following features:
+
+  - Syntax coloring (via font-lock) for grammar symbols and builtin
+    functions and variables for up to GLSL version 4.6
+
+  - Indentation for the current line (TAB) and selected region
+    (C-M-\).
+
+  - Switching between file.vert and file.frag with S-lefttab (via
+    ff-find-other-file).
+
+* Version
+
+  - 0.0.1 Alpha (Experimental)
+
+* Dependencies
+
+  - align
+  - cc-mode
+  - find-file
+  - easymenu
+
+* Tested on
+
+  - Emacs 28.0.50
+
+* Installation
+** Manually
+
+   Clone =glsl-mode= repository to an arbitrary location:
+
+   #+BEGIN_SRC sh
+
+   $ git clone https://github.com/esac-io/glsl-mode ~/.emacs.d/site-elisp/glsl-mode
+
+   #+END_SRC
+
+   Add =glsl-mode= directory to =load-path= in your
+   Emacs initialization file (~init.el~) and load it.
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; add to load-path
+   (add-to-list 'load-path "/replace/me/to/glsl-mode/full/path")
+
+   ;; load glsl-mode feature
+   (require 'glsl-mode nil t)
+
+   ;; add the file name patterns to load glsl-mode automatically
+   (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+   (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+   (add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
+   (add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
+
+   #+END_SRC
+
+   - Note: For a more dynamic approach:
+     - =M-x load-file RET=
+     - =M-x load-library RET glsl-mode RET=
+
+** Compile
+
+   * Note: Optional (but recommended).
+
+   To compile the files to the =Elisp= byte-compiled representation:
+
+   #+BEGIN_SRC sh
+
+   [at-glsl-mode-root-directory]$ make
+
+   #+END_SRC
+
+* Customize
+
+    To see all the options inside =Emacs= and customize it,
+    use: =M-x customize-group RET glsl-mode RET=.
+
+* Reference
+
+  - https://github.com/jimhourihan/glsl-mode
+  - http://artis.inrialpes.fr/~Xavier.Decoret/resources/glsl-mode
+  - https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.60.pdf
+    the official reference document for GLSL 4.6
+
+* EOF
+
+
+
