@@ -148,9 +148,6 @@ are added to the `glsl-builtin-list' and are fontified using the
     glsl-mode-map)
   "The `glsl-mode' standard keymap.")
 
-(defvar glsl-font-lock-keywords glsl-font-lock-keywords-1
-  "Default highlighting expressions for GLSL mode.")
-
 (defvar glsl-mode-syntax-table
   (let ((glsl-mode-syntax-table (make-syntax-table)))
     (modify-syntax-entry ?/ ". 124b" glsl-mode-syntax-table)
@@ -205,9 +202,9 @@ are added to the `glsl-builtin-list' and are fontified using the
   '((t (:inherit font-lock-preprocessor-face)))
   "Preprocessor face.")
 
-(defmacro glsl-ppre (strings)
+(defun glsl-ppre (strings)
   "Return a regexp to match a string in the list STRINGS."
-  `(format "\\<\\(%s\\)\\>" (regexp-opt ,@strings)))
+  (format "\\<\\(%s\\)\\>" (regexp-opt strings)))
 
 (defvar glsl-type-list
   '("float" "double" "int" "void" "bool" "true" "false" "mat2" "mat3"
@@ -342,44 +339,11 @@ are added to the `glsl-builtin-list' and are fontified using the
   '("__LINE__" "__FILE__" "__VERSION__")
   "Glsl pre-processor builtin table/list.")
 
-(defvar glsl-font-lock-keywords-1
-  `(append
-    (list
-     (cons (format "^[ \t]*#[ \t]*\\<\\(%s\\)\\>"
-                   (regexp-opt glsl-preprocessor-directive-list))
-           glsl-preprocessor-face)
-     (cons (glsl-ppre glsl-type-list)
-           glsl-type-face)
-     (cons (glsl-ppre glsl-deprecated-qualifier-list)
-           glsl-deprecated-keyword-face)
-     (cons (glsl-ppre glsl-reserved-list)
-           glsl-reserved-keyword-face)
-     (cons (glsl-ppre glsl-qualifier-list)
-           glsl-qualifier-face)
-     (cons (glsl-ppre glsl-keyword-list)
-           glsl-keyword-face)
-     (cons (glsl-ppre glsl-preprocessor-builtin-list)
-           glsl-keyword-face)
-     (cons (glsl-ppre glsl-deprecated-builtin-list)
-           glsl-deprecated-builtin-face)
-     (cons (glsl-ppre glsl-builtin-list)
-           glsl-builtin-face)
-     (cons (glsl-ppre glsl-deprecated-variables-list)
-           glsl-deprecated-variable-name-face)
-     (cons "gl_[A-Z][A-Za-z_]+" glsl-variable-name-face))
-    (when glsl-additional-types
-      (list
-       (cons (glsl-ppre glsl-additional-types) glsl-type-face)))
-    (when glsl-additional-keywords
-      (list
-       (cons (glsl-ppre glsl-additional-keywords) glsl-keyword-face)))
-    (when glsl-additional-qualifiers
-      (list
-       (cons (glsl-ppre glsl-additional-qualifiers) glsl-qualifier-face)))
-    (when glsl-additional-built-ins
-      (list
-       (cons (glsl-ppre glsl-additional-built-ins) glsl-builtin-face))))
+(defvar glsl-font-lock-keywords-1 nil
   "Highlighting expressions for GLSL mode.")
+
+(defvar glsl-font-lock-keywords glsl-font-lock-keywords-1
+  "Default highlighting expressions for GLSL mode.")
 
 (easy-menu-define glsl-menu glsl-mode-map
   "GLSL Menu"
@@ -414,7 +378,7 @@ are added to the `glsl-builtin-list' and are fontified using the
 (defun glsl--set-font-lock ()
   "Set default font locks."
   (set (make-local-variable 'font-lock-defaults)
-       '(glsl-font-lock-keywords)))
+       glsl-font-lock-keywords))
 
 (defun glsl--set-find-other-file ()
   "Set `ff-other-file-alist'.
@@ -437,7 +401,7 @@ file’s extension."
   ;; initialize cc resources
   (glsl--initialize-cc-resources)
   ;; set default font lock
-  (glsl--set-font-lock)
+  ;; (glsl--set-font-lock)
   ;; set local find other file associative list
   (glsl--set-find-other-file)
   ;; setup comment GLSL comment strings
